@@ -1,58 +1,63 @@
-import java.awt.Image;
+import java.awt.*;
 
-
-// Set Objects (Wall, Ghost, PacMan, ...)
-
+/**
+ * Represents any rectangular object on the game board.
+ * Used as base for walls, food, PacMan, ghosts, etc.
+ */
 public class Block {
     public int x, y, width, height;
     public Image image;
-
-    public int startX, startY;
-    public char direction = 'U'; // U = Up, D = Down, L = Left, R = Right
+    public boolean isEaten = false;
+    public char direction = 'R'; // Only used if moving entity
     public int velocityX = 0, velocityY = 0;
-    public boolean isEaten = false; // eaten Ghosts
+    public int startX, startY;
 
-    public Block(Image image, int x, int y, int width, int height) {
-        this.image = image;
-        this.x = x;
-        this.y = y; 
-        this.width = width;
-        this.height = height;
-        this.startX = x;
-        this.startY = y;
+    public Block(Image img, int x, int y, int w, int h) {
+        this.image = img;
+        this.x = this.startX = x;
+        this.y = this.startY = y;
+        this.width = w;
+        this.height = h;
     }
 
-    
-    public void updateVelocity(int tileSize) {
-        if (this.direction == 'U') {
-            this.velocityX = 0;
-            this.velocityY = -tileSize / 4;
-        } else if (this.direction == 'D') {
-            this.velocityX = 0;
-            this.velocityY = tileSize / 4;
-        } else if (this.direction == 'L') {
-            this.velocityX = -tileSize / 4;
-            this.velocityY = 0;
-        } else if (this.direction == 'R') {
-            this.velocityX = tileSize / 4;
-            this.velocityY = 0;
+    public void draw(Graphics g) {
+        if (image != null && image.getWidth(null) > 0) {
+            g.drawImage(image, x, y, width, height, null);
+        } else {
+            // Fallback: draw colored rectangles for debugging
+            String className = getClass().getSimpleName();
+            if (className.equals("Player")) g.setColor(Color.YELLOW);
+            else if (className.equals("Ghost")) g.setColor(Color.CYAN);
+            else g.setColor(Color.WHITE);
+            g.fillRect(x, y, width, height);
         }
     }
 
-    
-    // Reset to Start Position
-    public void reset() {
-        this.x = this.startX;
-        this.y = this.startY;
-        this.isEaten = false;
+    public void updateVelocity(int tileSize) {
+        velocityX = velocityY = 0;
+        switch (direction) {
+            case 'U': velocityY = -tileSize / 8; break;
+            case 'D': velocityY = tileSize / 8; break;
+            case 'L': velocityX = -tileSize / 8; break;
+            case 'R': velocityX = tileSize / 8; break;
+        }
     }
 
-    
-    // Rectangular collision detection
+    public void move() {
+        x += velocityX;
+        y += velocityY;
+    }
+
+    public void reset() {
+        x = startX;
+        y = startY;
+        velocityX = velocityY = 0;
+        direction = 'R';
+        isEaten = false;
+    }
+
     public static boolean collision(Block a, Block b) {
-        return a.x < b.x + b.width &&
-               a.x + a.width > b.x &&
-               a.y < b.y + b.height && 
-               a.y + a.height > b.y;
+        return a.x < b.x + b.width && a.x + a.width > b.x &&
+               a.y < b.y + b.height && a.y + a.height > b.y;
     }
 }

@@ -2,11 +2,22 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 
-
-// Loads and caches images from the src/img directory
+/**
+ * Loads and caches images for the game.
+ */
 public class ResourceManager {
     private static final String IMG_PATH = "src/img/";
     private static final HashMap<String, Image> imageCache = new HashMap<>();
+
+    public static Image getImage(String filename) {
+        if (imageCache.containsKey(filename)) return imageCache.get(filename);
+        Image img = new ImageIcon(IMG_PATH + filename).getImage();
+        if (img == null || img.getWidth(null) <= 0) {
+            System.out.println("Could not load image: " + IMG_PATH + filename);
+        }
+        imageCache.put(filename, img);
+        return img;
+    }
 
     public static Image getWallImage()         { return getImage("wall.png"); }
     public static Image getBlueGhostImage()    { return getImage("blueGhost.png"); }
@@ -20,25 +31,4 @@ public class ResourceManager {
     public static Image getCherryImage()       { return getImage("cherry.png"); }
     public static Image getScaredGhostImage()  { return getImage("scaredGhost.png"); }
     public static Image getHeartImage()        { return getImage("heart.png"); }
-
-    
-    // Loads and caches an image by filename (e.g. "wall.png").
-    // Returns null if the image is not found.
-    public static Image getImage(String filename) {
-    if (imageCache.containsKey(filename)) {
-        return imageCache.get(filename);
-    }
-    Image img = null;
-    try {
-        img = new ImageIcon(IMG_PATH + filename).getImage();
-        if (img != null && img.getWidth(null) > 0) {
-            imageCache.put(filename, img);
-        } else {
-            System.out.println("Could not load Image: " + IMG_PATH + filename);
-        }
-    } catch (Exception e) {
-        System.out.println("Error while loading " + IMG_PATH + filename);
-    }
-    return img;
-    }
 }
