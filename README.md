@@ -2,15 +2,14 @@
 
 A classic Pac-Man remake written in Java using Swing.  
 Control Pac-Man, avoid ghosts, eat all the food, grab cherries for power-ups, and try to achieve the highest score possible.  
-Now with highscore saving, a win screen, and smooth, buffered controls for an authentic arcade feel!
-Soon multiple maps!
-
+With highscore saving, a win screen, and smooth, buffered controls for an authentic arcade feel!
 ---
-![image](https://github.com/user-attachments/assets/da782c24-0b33-4b29-92e4-5026bc1499a5)
 
-![pac2](https://github.com/user-attachments/assets/e5aef24f-004a-4581-9853-1bb926c8523d)
+![image](https://github.com/user-attachments/assets/2f872f2b-0857-4c7f-b0da-de24d043f098)
 
-![pac1](https://github.com/user-attachments/assets/490d9d18-d822-4fda-aa3f-c63399cef31e)
+![image](https://github.com/user-attachments/assets/20dfd965-2682-4df3-a26d-af5b246e674e)
+
+![image](https://github.com/user-attachments/assets/3b12a973-9131-4644-a625-4f9397550054)
 
 
 ## Features
