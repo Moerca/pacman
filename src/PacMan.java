@@ -25,6 +25,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     private Image pacmanRightImage;
     private Image cherryImage;
     private Image scaredGhostImage;
+    private Image heartImage;
 
 
     // TODO: create more Maps (Randomized?)
@@ -104,6 +105,8 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
 
         cherryImage      = ResourceManager.getCherryImage();
         scaredGhostImage = ResourceManager.getScaredGhostImage();
+        heartImage       = ResourceManager.getHeartImage();
+
 
         // set Highscore 
         try {
@@ -199,9 +202,16 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             g.drawImage(cherry.image, cherry.x, cherry.y, cherry.width, cherry.height, null);
         if (pacman != null)
             g.drawImage(pacman.image, pacman.x, pacman.y, pacman.width, pacman.height, null);
+        
+        // Lives <3 <3 <3
+        int heartSize = 20;
+        for (int i = 0; i < lives; i++) {
+            g.drawImage(heartImage, 10 + i * (heartSize + 5), 10, heartSize, heartSize, null);
+        }
+        // Score 
         g.setFont(new Font("Arial", Font.PLAIN, 18));
         g.setColor(Color.WHITE);
-        g.drawString("x" + lives + " Score: " + score, tileSize/2, tileSize/2);
+        g.drawString("Score: " + score, 10 + 3 * (heartSize + 10), 25);
         g.drawString("Highscore: " + highscore, boardWidth - 180, tileSize/2);
 
         if (paused && !gameOver) {

@@ -19,23 +19,26 @@ public class ResourceManager {
     public static Image getPacmanRightImage()  { return getImage("pacmanRight.png"); }
     public static Image getCherryImage()       { return getImage("cherry.png"); }
     public static Image getScaredGhostImage()  { return getImage("scaredGhost.png"); }
+    public static Image getHeartImage()        { return getImage("heart.png"); }
 
     
     // Loads and caches an image by filename (e.g. "wall.png").
     // Returns null if the image is not found.
     public static Image getImage(String filename) {
-        if (imageCache.containsKey(filename)) {
-            return imageCache.get(filename);
+    if (imageCache.containsKey(filename)) {
+        return imageCache.get(filename);
+    }
+    Image img = null;
+    try {
+        img = new ImageIcon(IMG_PATH + filename).getImage();
+        if (img != null && img.getWidth(null) > 0) {
+            imageCache.put(filename, img);
+        } else {
+            System.out.println("Could not load Image: " + IMG_PATH + filename);
         }
-        Image img = null;
-        try {
-            img = new ImageIcon(IMG_PATH + filename).getImage();
-            if (img != null) {
-                imageCache.put(filename, img);
-            }
-        } catch (Exception e) {
-            System.err.println("Could not load image: " + IMG_PATH + filename);
-        }
-        return img;
+    } catch (Exception e) {
+        System.out.println("Error while loading " + IMG_PATH + filename);
+    }
+    return img;
     }
 }
