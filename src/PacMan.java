@@ -8,9 +8,8 @@ import java.util.Random;
 import java.util.Set;
 import java.util.List;
 
-/**
- * Main PacMan game panel. Handles UI, input, game loop, and all timers.
- */
+
+// Main PacMan game panel. Handles UI, input, game loop, and all timers.
 public class PacMan extends JPanel implements ActionListener, KeyListener {
     private static final int TILE_SIZE = 32;
     private static final int ROWS = 21;
@@ -18,6 +17,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     private static final int BOARD_WIDTH = COLS * TILE_SIZE;
     private static final int BOARD_HEIGHT = ROWS * TILE_SIZE;
 
+    // TODO add new Maps
     private static final String[] TILE_MAP = {
         "XXXXXXXXXXXXXXXXXXX",
         "X        X        X",
@@ -76,7 +76,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         addKeyListener(this);
         setFocusable(true);
 
-        // Load highscore from file
+        // Load Highscore from file
         try {
             Path path = Paths.get("highscore.txt");
             if (Files.exists(path)) {
@@ -134,7 +134,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
                                            ResourceManager.getPacmanUpImage(),
                                            ResourceManager.getPacmanDownImage(),
                                            x, y, TILE_SIZE);
-                        requestedDirection = 'R';
+                        requestedDirection = 'U';
                         break;
                     case ' ':
                         foods.add(new Block(null, x + 14, y + 14, 4, 4));
@@ -179,7 +179,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         g.setFont(new Font("Arial", Font.PLAIN, 18));
         g.setColor(Color.WHITE);
         g.drawString("Score: " + score, 10 + 3 * (heartSize + 10), 25);
-        g.drawString("Highscore: " + highscore, BOARD_WIDTH - 180, TILE_SIZE / 2);
+        g.drawString("Highscore: " + highscore, BOARD_WIDTH - 180, 25);
     }
 
     private void drawPause(Graphics g) {

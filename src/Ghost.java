@@ -1,8 +1,8 @@
 import java.awt.*;
 
-/**
- * Represents a Ghost enemy.
- */
+
+// Represents a Ghost enemy
+
 public class Ghost extends Block {
     public Image scaredImage, normalImage;
     public char initialDirection;

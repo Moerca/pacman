@@ -1,9 +1,7 @@
 import java.awt.*;
 
-/**
- * Represents any rectangular object on the game board.
- * Used as base for walls, food, PacMan, ghosts, etc.
- */
+// Represents any object on the game board
+
 public class Block {
     public int x, y, width, height;
     public Image image;
@@ -40,6 +38,7 @@ public class Block {
             case 'D': velocityY = tileSize / 8; break;
             case 'L': velocityX = -tileSize / 8; break;
             case 'R': velocityX = tileSize / 8; break;
+            case 'S': velocityX = 0;        // Stop
         }
     }
 

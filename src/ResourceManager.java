@@ -2,9 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 
-/**
- * Loads and caches images for the game.
- */
+
+// Loads and caches images for the game
+
 public class ResourceManager {
     private static final String IMG_PATH = "src/img/";
     private static final HashMap<String, Image> imageCache = new HashMap<>();

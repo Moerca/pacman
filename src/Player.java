@@ -1,8 +1,8 @@
 import java.awt.*;
 
-/**
- * Represents Pac-Man.
- */
+
+// Represents Pac-Man
+
 public class Player extends Block {
     public Image upImage, downImage, leftImage, rightImage;
 
@@ -12,7 +12,7 @@ public class Player extends Block {
         this.leftImage = left;
         this.upImage = up;
         this.downImage = down;
-        this.direction = 'R';
+        this.direction = 'S';
         updateVelocity(size);
     }
 
