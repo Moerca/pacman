@@ -249,8 +249,17 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             pacman.y += pacman.velocityY;
         }
 
+        // Portal Logic for Pacman
+        // Tunnel row is 9 (0-index), so y == 9* tileSize
+        if (pacman.y == 9 * tileSize) {
+            if (pacman.x < 0) {
+                pacman.x = boardWidth - pacman.width;
+            } else if (pacman.x + pacman.width > boardWidth ) {
+                pacman.x = 0;
+            }
+        }
 
-        //check ghost collision
+        // Check Ghost Collision
         for (Block ghost : ghosts ) { 
             if (collision(ghost, pacman)) {
                 lives -=1;
@@ -265,6 +274,17 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             }
             ghost.x += ghost.velocityX;
             ghost.y += ghost.velocityY;
+
+
+            // Portal Logic for Ghosts
+            if (ghost.y == 9 * tileSize) {
+            if (ghost.x < 0) {
+                ghost.x = boardWidth - ghost.width;
+            } else if (ghost.x + ghost.width > boardWidth) {
+                ghost.x = 0;
+            }
+        }
+
             for (Block wall : walls ) {
                 if (collision(ghost, wall) || ghost.x <= 0 || ghost.x + ghost.width >= boardWidth) {
                     ghost.x -= ghost.velocityX;
