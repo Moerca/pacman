@@ -26,6 +26,8 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     private Image cherryImage;
     private Image scaredGhostImage;
 
+
+    // TODO: create more Maps (Randomized?)
     private String[] tileMap = {
         "XXXXXXXXXXXXXXXXXXX",
         "X        X        X",
@@ -54,12 +56,17 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     HashSet<Block> foods;
     HashSet<Block> ghosts;
     Block pacman;
-
+      
     Timer gameLoop;
     char[] directions = {'U', 'D', 'L', 'R'};
     Random random = new Random();
+
+    // Stats
     int score = 0;
+    int highscore = 0;
     int lives = 3;
+
+    boolean won = false;
     boolean gameOver = false;
     private boolean paused = false;
 
@@ -76,9 +83,6 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
 
     // Direction buffer
     char requestedDirection;
-
-    int highscore = 0;
-    boolean won = false;
 
     public PacMan() {
         setPreferredSize(new Dimension(boardWidth, boardHeight));
@@ -132,40 +136,49 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         foods = new HashSet<>();
         ghosts = new HashSet<>();
 
-        for (int r = 0; r < rowCount; r++) {
-            for (int c = 0; c < columnCount; c++) {
-                char tileChar = tileMap[r].charAt(c);
-                int x = c * tileSize;
-                int y = r * tileSize;
 
-                switch (tileChar) {
-                    case 'X':
-                        walls.add(new Block(wallImage, x, y, tileSize, tileSize));
-                        break;
-                    case 'b':
-                        ghosts.add(new Block(blueGhostImage, x, y, tileSize, tileSize));
-                        break;
-                    case 'o':
-                        ghosts.add(new Block(orangeGhostImage, x, y, tileSize, tileSize));
-                        break;
-                    case 'p':
-                        ghosts.add(new Block(pinkGhostImage, x, y, tileSize, tileSize));
-                        break;
-                    case 'r':
-                        ghosts.add(new Block(redGhostImage, x, y, tileSize, tileSize));
-                        break;
-                    case 'P':
-                        pacman = new Block(pacmanRightImage, x, y, tileSize, tileSize);
-                        break;
-                    case ' ':
-                        foods.add(new Block(null, x + 14, y + 14, 4, 4));
-                        break;
-                    default:
-                        break;
-                }
-            }
+    for (int r = 0; r < rowCount; r++) {
+        for (int c = 0; c < columnCount; c++) {
+            char tileChar = tileMap[r].charAt(c);
+            int x = c * tileSize;
+            int y = r * tileSize;
+
+        switch (tileChar) {
+            case 'X':
+                walls.add(new Block(wallImage, x, y, tileSize, tileSize));
+                break;
+            case 'b':
+                ghosts.add(new Block(blueGhostImage, x, y, tileSize, tileSize));
+                foods.add(new Block(null, x + 14, y + 14, 4, 4));
+                break;
+            case 'o':
+                ghosts.add(new Block(orangeGhostImage, x, y, tileSize, tileSize));
+                foods.add(new Block(null, x + 14, y + 14, 4, 4));
+                break;
+            case 'p':
+                ghosts.add(new Block(pinkGhostImage, x, y, tileSize, tileSize));
+                foods.add(new Block(null, x + 14, y + 14, 4, 4));
+                break;
+            case 'r':
+                ghosts.add(new Block(redGhostImage, x, y, tileSize, tileSize));
+                foods.add(new Block(null, x + 14, y + 14, 4, 4));
+                break;
+            case 'A':
+                foods.add(new Block(null, x + 14, y + 14, 4, 4));
+                break;
+            case 'P':
+                pacman = new Block(pacmanRightImage, x, y, tileSize, tileSize);
+                foods.add(new Block(null, x + 14, y + 14, 4, 4));
+                break;
+            case ' ':
+                foods.add(new Block(null, x + 14, y + 14, 4, 4));
+                break;
+            default:
+                break;
+            }   
         }
     }
+} 
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -199,33 +212,36 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             g.setFont(new Font("Arial", Font.BOLD, 36));
             g.drawString("Paused", boardWidth/2 - 70, boardHeight/2);
         }
+        
         if (gameOver) {
             g.setColor(new Color(0, 0, 0, 180));
             g.fillRect(0, 0, boardWidth, boardHeight);
+
             g.setColor(Color.RED);
-            g.setFont(new Font("Arial", Font.BOLD, 54));
-            g.drawString("GAME OVER", boardWidth/2 - 180, boardHeight/2 - 40);
-            g.setFont(new Font("Arial", Font.PLAIN, 32));
+            drawCenteredString(g, "GAME OVER", boardHeight/2 - 40, new Font("Arial", Font.BOLD, 54));
+
             g.setColor(Color.WHITE);
-            g.drawString("Score: " + score, boardWidth/2 - 80, boardHeight/2 + 10);
-            g.drawString("Highscore: " + highscore, boardWidth/2 - 100, boardHeight/2 + 50);
-            g.setFont(new Font("Arial", Font.BOLD, 24));
+            drawCenteredString(g, "Score: " + score, boardHeight/2 + 10, new Font("Arial", Font.PLAIN, 32));
+            drawCenteredString(g, "Highscore: " + highscore, boardHeight/2 + 50, new Font("Arial", Font.PLAIN, 32));
+
             g.setColor(Color.YELLOW);
-            g.drawString("Press any key to restart", boardWidth/2 - 150, boardHeight/2 + 100);
+            drawCenteredString(g, "Press any key to restart", boardHeight/2 + 100, new Font("Arial", Font.BOLD, 24));
         }
+
         if (won) {
             g.setColor(new Color(0, 0, 0, 180));
             g.fillRect(0, 0, boardWidth, boardHeight);
+
             g.setColor(Color.GREEN);
-            g.setFont(new Font("Arial", Font.BOLD, 54));
-            g.drawString("YOU WIN!", boardWidth/2 - 140, boardHeight/2 - 40);
-            g.setFont(new Font("Arial", Font.PLAIN, 32));
+            drawCenteredString(g, "YOU WIN!", boardHeight/2 - 40, new Font("Arial", Font.BOLD, 54));
+
             g.setColor(Color.WHITE);
-            g.drawString("Score: " + score, boardWidth/2 - 80, boardHeight/2 + 10);
-            g.setFont(new Font("Arial", Font.BOLD, 24));
+            drawCenteredString(g, "Score: " + score, boardHeight/2 + 10, new Font("Arial", Font.PLAIN, 32));
+
             g.setColor(Color.YELLOW);
-            g.drawString("Press any key for next level", boardWidth/2 - 170, boardHeight/2 + 60);
+            drawCenteredString(g, "Press any key for next level", boardHeight/2 + 60, new Font("Arial", Font.BOLD, 24));
         }
+
     }
 
     public void spawnCherry() {
@@ -414,6 +430,14 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             updateDirectionIfPossible(ghost, newDirection);
         }
         requestedDirection = pacman.direction;
+    }
+
+    // Center "Won" & "Gameover" Overlay
+    private void drawCenteredString(Graphics g, String text, int y, Font font) {
+    FontMetrics fm = g.getFontMetrics(font);
+    int x = (boardWidth - fm.stringWidth(text)) / 2;
+    g.setFont(font);
+    g.drawString(text, x, y);
     }
 
     @Override
