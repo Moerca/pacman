@@ -168,7 +168,6 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
                 break;
             case 'P':
                 pacman = new Block(pacmanRightImage, x, y, tileSize, tileSize);
-                foods.add(new Block(null, x + 14, y + 14, 4, 4));
                 break;
             case ' ':
                 foods.add(new Block(null, x + 14, y + 14, 4, 4));
