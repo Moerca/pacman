@@ -95,7 +95,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         "XXXX XXXX XXXX XXXX",
         "OOOX X       X XOOO",
         "XXXX X XXrXX X XXXX",
-        "O       bpo       O",
+        "A       bpo       A",
         "XXXX X XXXXX X XXXX",
         "OOOX X       X XOOO",
         "XXXX X XXXXX X XXXX",
@@ -120,6 +120,8 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
     int score = 0;
     int lives = 3;
     boolean gameOver = false;
+
+    private boolean paused = false;
 
     PacMan() {
         setPreferredSize(new Dimension(boardWidth, boardHeight));
@@ -189,6 +191,7 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         }
     }
 
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -212,6 +215,21 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         if (pacman != null) {
             g.drawImage(pacman.image, pacman.x, pacman.y, pacman.width, pacman.height, null);
         }
+
+        g.setFont(new Font("Arial", Font.PLAIN, 18));
+    if (paused) {
+        g.setColor(Color.YELLOW);
+        g.setFont(new Font("Arial", Font.BOLD, 36));
+        g.drawString("Paused", boardWidth/2 - 70, boardHeight/2);
+        g.setFont(new Font("Arial", Font.PLAIN, 18));
+    }
+    if (gameOver) {
+        g.setColor(Color.RED);
+        g.drawString("Game Over: " + String.valueOf(score), tileSize/2, tileSize/2);
+    } else {
+        g.setColor(Color.WHITE);
+        g.drawString("x" + String.valueOf(lives) + " Score: " + String.valueOf(score), tileSize/2, tileSize/2);
+    }
 
         
      //score
@@ -283,7 +301,6 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
 }
 
 // wenn links rein dann rechts wieder raus
-// pause funktion 
 // schlauere KI
 // Highscore
 // Power Ups (scared ghosts)
@@ -330,8 +347,44 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             lives = 3;
             score = 0;
             gameOver = false;
+            paused = false;
             gameLoop.start();
         }
+
+        // Toggle pause with 'P' or space bar
+        if (e.getKeyCode() == KeyEvent.VK_P || e.getKeyCode() == KeyEvent.VK_SPACE) {
+            paused = !paused;
+            if (paused) {
+                gameLoop.stop();
+            } else {
+                gameLoop.start();
+            }
+            repaint();
+            return;
+        }
+
+        // Dont allow movement if paused
+        if (paused) return;
+
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+        pacman.updateDirection('U');
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+        pacman.updateDirection('D');
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+        pacman.updateDirection('L');
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+        pacman.updateDirection('R');
+        }
+
+        if (pacman.direction == 'U') {
+        pacman.image = pacmanUpImage;
+    } else if (pacman.direction == 'D') {
+        pacman.image = pacmanDownImage;
+    } else if (pacman.direction == 'L') {
+        pacman.image = pacmanLeftImage;
+    } else if (pacman.direction == 'R') {
+        pacman.image = pacmanRightImage;
+    }
         
         // System.out.println("KeyEvent: " + e.getKeyCode());
         if (e.getKeyCode() == KeyEvent.VK_UP) {
