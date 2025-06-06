@@ -87,19 +87,19 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         setFocusable(true);
 
         // Load Images
-        wallImage = new ImageIcon(getClass().getResource("./img/wall.png")).getImage();
-        blueGhostImage = new ImageIcon(getClass().getResource("./img/blueGhost.png")).getImage();
-        orangeGhostImage = new ImageIcon(getClass().getResource("./img/orangeGhost.png")).getImage();
-        pinkGhostImage = new ImageIcon(getClass().getResource("./img/pinkGhost.png")).getImage();
-        redGhostImage = new ImageIcon(getClass().getResource("./img/redGhost.png")).getImage();
+        wallImage        = ResourceManager.getWallImage();
+        blueGhostImage   = ResourceManager.getBlueGhostImage();
+        orangeGhostImage = ResourceManager.getOrangeGhostImage();
+        pinkGhostImage   = ResourceManager.getPinkGhostImage();
+        redGhostImage    = ResourceManager.getRedGhostImage();
 
-        pacmanUpImage = new ImageIcon(getClass().getResource("./img/pacmanUp.png")).getImage();
-        pacmanDownImage = new ImageIcon(getClass().getResource("./img/pacmanDown.png")).getImage();
-        pacmanLeftImage = new ImageIcon(getClass().getResource("./img/pacmanLeft.png")).getImage();
-        pacmanRightImage = new ImageIcon(getClass().getResource("./img/pacmanRight.png")).getImage();
+        pacmanUpImage    = ResourceManager.getPacmanUpImage();
+        pacmanDownImage  = ResourceManager.getPacmanDownImage();
+        pacmanLeftImage  = ResourceManager.getPacmanLeftImage();
+        pacmanRightImage = ResourceManager.getPacmanRightImage();
 
-        cherryImage = new ImageIcon(getClass().getResource("./img/cherry.png")).getImage();
-        scaredGhostImage = new ImageIcon(getClass().getResource("./img/scaredGhost.png")).getImage();
+        cherryImage      = ResourceManager.getCherryImage();
+        scaredGhostImage = ResourceManager.getScaredGhostImage();
 
         // set Highscore 
         try {

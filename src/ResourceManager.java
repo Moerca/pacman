@@ -1,0 +1,41 @@
+import javax.swing.*;
+import java.awt.*;
+import java.util.HashMap;
+
+
+// Loads and caches images from the src/img directory
+public class ResourceManager {
+    private static final String IMG_PATH = "src/img/";
+    private static final HashMap<String, Image> imageCache = new HashMap<>();
+
+    public static Image getWallImage()         { return getImage("wall.png"); }
+    public static Image getBlueGhostImage()    { return getImage("blueGhost.png"); }
+    public static Image getOrangeGhostImage()  { return getImage("orangeGhost.png"); }
+    public static Image getPinkGhostImage()    { return getImage("pinkGhost.png"); }
+    public static Image getRedGhostImage()     { return getImage("redGhost.png"); }
+    public static Image getPacmanUpImage()     { return getImage("pacmanUp.png"); }
+    public static Image getPacmanDownImage()   { return getImage("pacmanDown.png"); }
+    public static Image getPacmanLeftImage()   { return getImage("pacmanLeft.png"); }
+    public static Image getPacmanRightImage()  { return getImage("pacmanRight.png"); }
+    public static Image getCherryImage()       { return getImage("cherry.png"); }
+    public static Image getScaredGhostImage()  { return getImage("scaredGhost.png"); }
+
+    
+    // Loads and caches an image by filename (e.g. "wall.png").
+    // Returns null if the image is not found.
+    public static Image getImage(String filename) {
+        if (imageCache.containsKey(filename)) {
+            return imageCache.get(filename);
+        }
+        Image img = null;
+        try {
+            img = new ImageIcon(IMG_PATH + filename).getImage();
+            if (img != null) {
+                imageCache.put(filename, img);
+            }
+        } catch (Exception e) {
+            System.err.println("Could not load image: " + IMG_PATH + filename);
+        }
+        return img;
+    }
+}
