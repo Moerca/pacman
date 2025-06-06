@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
-import java.util.List;
 
 
 // Main PacMan game panel. Handles UI, input, game loop, and all timers.
